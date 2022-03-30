@@ -191,29 +191,79 @@ namespace PlayFab.Internal
 
         #endregion Unity Multi-version Utilities
 
+        // [MenuItem("PlayFab/Testing/Build PlayFab UnitySDK Package")]
+        // public static void PackagePlayFabSdk()
+        // {
+        //     var workspacePath = Environment.GetEnvironmentVariable("WORKSPACE"); // This is a Jenkins-Build environment variable
+        //     if (string.IsNullOrEmpty(workspacePath))
+        //     {
+        //         workspacePath = "C:\\agent\\_work\\"; // Expected typical location
+        //     }
+        //     var repoName = Environment.GetEnvironmentVariable("SdkName"); // This is a Jenkins-Build environment variable
+        //     if (string.IsNullOrEmpty(repoName))
+        //     {
+        //         repoName = "UnitySDK"; // Default if we aren't building something else
+        //     }
+
+        //     Setup();
+        //     var packageFolder = PathCombine(workspacePath, "sdks", repoName, "Packages");
+        //     MkDir(packageFolder);
+        //     var packageFullPath = Path.Combine(packageFolder, PACKAGE_FILENAME);
+        //     if (File.Exists(packageFullPath))
+        //     {
+        //         File.Delete(packageFullPath);
+        //     }
+
+        //     if (File.Exists(packageFullPath))
+        //     {
+        //         throw new PlayFabException(PlayFabExceptionCode.BuildError, "The older package version could not be deleted.");
+        //     }
+
+        //     AssetDatabase.ExportPackage(SdkAssets, packageFullPath, ExportPackageOptions.Recurse);
+
+        //     if (!File.Exists(packageFullPath))
+        //     {
+        //         throw new PlayFabException(PlayFabExceptionCode.BuildError, "The package was not replaced as expected.");
+        //     }
+
+        //     Debug.Log("Package built: " + packageFullPath);
+        // }
+
         [MenuItem("PlayFab/Testing/Build PlayFab UnitySDK Package")]
-        public static void PackagePlayFabSdk()
+        public static void PackagePlayFabSdk(string workspacePath = "C:\\agent\\_work\\", string repoName = "UnitySDK")
         {
-            var workspacePath = Environment.GetEnvironmentVariable("WORKSPACE"); // This is a Jenkins-Build environment variable
-            if (string.IsNullOrEmpty(workspacePath))
-                workspacePath = "C:\\depot"; // Expected typical location
-            var repoName = Environment.GetEnvironmentVariable("SdkName"); // This is a Jenkins-Build environment variable
-            if (string.IsNullOrEmpty(repoName))
-                repoName = "UnitySDK"; // Default if we aren't building something else
+            // var workspacePath = Environment.GetEnvironmentVariable("WORKSPACE"); // This is a Jenkins-Build environment variable
+            // if (string.IsNullOrEmpty(workspacePath))
+            // {
+            //     workspacePath = "C:\\agent\\_work\\"; // Expected typical location
+            // }
+            // var repoName = Environment.GetEnvironmentVariable("SdkName"); // This is a Jenkins-Build environment variable
+            // if (string.IsNullOrEmpty(repoName))
+            // {
+            //     repoName = "UnitySDK"; // Default if we aren't building something else
+            // }
 
             Setup();
             var packageFolder = PathCombine(workspacePath, "sdks", repoName, "Packages");
             MkDir(packageFolder);
             var packageFullPath = Path.Combine(packageFolder, PACKAGE_FILENAME);
             if (File.Exists(packageFullPath))
+            {
                 File.Delete(packageFullPath);
+            }
+
             if (File.Exists(packageFullPath))
+            {
                 throw new PlayFabException(PlayFabExceptionCode.BuildError, "The older package version could not be deleted.");
+            }
 
             AssetDatabase.ExportPackage(SdkAssets, packageFullPath, ExportPackageOptions.Recurse);
 
             if (!File.Exists(packageFullPath))
+            {
                 throw new PlayFabException(PlayFabExceptionCode.BuildError, "The package was not replaced as expected.");
+            }
+
             Debug.Log("Package built: " + packageFullPath);
         }
 
